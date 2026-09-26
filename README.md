@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # VCHAT — Professional Modern Messaging Platform
 
 VCHAT is a professional, high-performance real-time messaging application built with Django and Django Channels. It features a modern 3-part messaging layout (Dark Navy navigation sidebar, conversation stream list, and spacious active chat area), instant WebSocket messaging, online presence tracking, typing indicators, read receipts, and voice/video calling integration.
@@ -68,3 +69,6 @@ Open:
    - Verify unread counters update in real time
    - Test voice / video call modal controls
    - Test message edit and deletion
+=======
+# chatapplication
+>>>>>>> 513359e38c068b3c2137f70059abe102d490bfc7
