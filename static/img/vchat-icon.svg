@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="48" height="48" fill="none">
+  <defs>
+    <linearGradient id="vgrad-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#0369A1"/>
+    </linearGradient>
+    <linearGradient id="vgrad-right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE"/>
+      <stop offset="60%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="vgrad-accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#67E8F9"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <filter id="v-shadow" x="-10%" y="-10%" width="120%" height="130%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#0369a1" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <!-- Background rounded hexagon or soft shield for contrast on any background -->
+  <rect width="92" height="92" x="4" y="4" rx="24" fill="#0A1128" />
+  <rect width="90" height="90" x="5" y="5" rx="23" stroke="rgba(56, 189, 248, 0.2)" stroke-width="1.5" />
+  
+  <g filter="url(#v-shadow)">
+    <!-- Left Wing of V -->
+    <path d="M22 26 C22 23.5 24 22 26.5 22 L37.5 22 C39.5 22 41.2 23.2 42 25 L50 49 L41 74 C40.5 75.5 38.5 76 37 75 L23.5 67 C22.5 66.5 22 65.5 22 64.5 Z" fill="url(#vgrad-left)" opacity="0.95"/>
+    
+    <!-- Right Wing of V (Dominant overlap) -->
+    <path d="M78 26 C78 23.5 76 22 73.5 22 L62.5 22 C60.5 22 58.8 23.2 58 25 L49 52 L50 77 C50 78.5 51.5 79.5 53 79 L60.5 75 C62 74 62.8 72.5 63.5 71 L77.5 28.5 C77.8 27.7 78 26.9 78 26 Z" fill="url(#vgrad-right)"/>
+    
+    <!-- Dynamic Messenger Node / Active Dot -->
+    <circle cx="74" cy="22" r="5.5" fill="url(#vgrad-accent)" stroke="#0A1128" stroke-width="2"/>
+    <circle cx="74" cy="22" r="2.5" fill="#FFFFFF"/>
+  </g>
+</svg>

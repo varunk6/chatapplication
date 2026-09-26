@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% block title %}VCHAT — Professional Modern Messaging{% endblock %}</title>
+    <meta name="description" content="VCHAT is a high-performance, professional real-time messaging application for seamless communication.">
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2.5.0">
+    
+    <!-- Critical Layout & Image Constraint Styles (Guarantees zero FOUC / zero icon overflow) -->
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; }
+        .vchat-app {
+            display: grid;
+            grid-template-columns: 76px 350px 1fr;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+        .vchat-nav-sidebar {
+            width: 76px;
+            height: 100vh;
+            background-color: #090e1a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .nav-brand-link {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .nav-brand-icon, .auth-logo-img {
+            width: 44px !important;
+            height: 44px !important;
+            max-width: 44px !important;
+            max-height: 44px !important;
+            object-fit: contain !important;
+            display: block !important;
+        }
+        @media (max-width: 768px) {
+            .vchat-app { grid-template-columns: 1fr; }
+            .vchat-nav-sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100vw;
+                height: 60px;
+                flex-direction: row;
+            }
+        }
+    </style>
+
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('vchat_theme') || localStorage.getItem('chat_theme') || 
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+<body>
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <!-- Image Lightbox Preview -->
+    <div id="image-lightbox" class="lightbox-modal hidden" onclick="closeLightbox(event)">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close preview">×</button>
+            <img id="lightbox-img" src="" alt="Full view preview">
+            <a id="lightbox-download" class="lightbox-btn" href="" download target="_blank">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download Image
+            </a>
+        </div>
+    </div>
+
+    {% block content %}{% endblock %}
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

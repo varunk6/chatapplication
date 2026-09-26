@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" width="240" height="64" fill="none">
+  <defs>
+    <linearGradient id="vl-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="vl-right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE"/>
+      <stop offset="60%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="vl-text" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#60A5FA"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Logo Mark -->
+  <g transform="translate(4, 4)">
+    <rect width="56" height="56" rx="15" fill="#0A1128"/>
+    <rect width="54" height="54" x="1" y="1" rx="14" stroke="rgba(56, 189, 248, 0.25)" stroke-width="1"/>
+    
+    <!-- Left Wing -->
+    <path d="M15 17 C15 15.5 16.5 14.5 18 14.5 L24 14.5 C25.5 14.5 26.8 15.4 27.5 16.7 L32 29 L26.5 45 C26 46 24.5 46.5 23.5 45.8 L16 41 C15.4 40.6 15 39.9 15 39.2 Z" fill="url(#vl-left)"/>
+    <!-- Right Wing -->
+    <path d="M47 17 C47 15.5 45.5 14.5 44 14.5 L38 14.5 C36.5 14.5 35.2 15.4 34.5 16.7 L30 29 L31.5 47 C31.5 48 32.5 48.7 33.5 48.3 L38 46 C39 45.5 39.5 44.5 40 43.5 L46.8 18.5 C46.9 18 47 17.5 47 17 Z" fill="url(#vl-right)"/>
+    <circle cx="44.5" cy="14.5" r="3.5" fill="#38BDF8" stroke="#0A1128" stroke-width="1.5"/>
+  </g>
+
+  <!-- Wordmark Text -->
+  <text x="74" y="42" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="28" font-weight="800" letter-spacing="1.5" fill="#FFFFFF">
+    V<tspan fill="url(#vl-text)">CHAT</tspan>
+  </text>
+  <circle cx="218" cy="38" r="3.5" fill="#00F2FE"/>
+</svg>

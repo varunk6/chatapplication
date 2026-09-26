@@ -1,0 +1,693 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}VCHAT — Messages{% endblock %}
+
+{% block content %}
+<div class="vchat-app" id="chat-app">
+    <!-- ========================================================
+         1. LEFT: PROFESSIONAL DARK NAVIGATION SIDEBAR
+         ======================================================== -->
+    <nav class="vchat-nav-sidebar" id="vchat-nav-sidebar" aria-label="Main Navigation">
+        <!-- Brand / App Logo -->
+        <div class="nav-brand-section">
+            <a href="{% url 'home' %}" class="nav-brand-link" title="VCHAT Home">
+                <img src="{% static 'img/vchat-icon.svg' %}" alt="VCHAT Logo" class="nav-brand-icon" width="44" height="44" style="width:44px; height:44px; max-width:44px; max-height:44px;">
+            </a>
+        </div>
+
+        <!-- Primary Navigation Items -->
+        <div class="nav-menu-primary">
+            <button class="nav-item active" id="nav-btn-chats" onclick="switchNavSection('chats')" title="Chats" aria-label="Chats">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span class="nav-badge hidden" id="nav-unread-total">0</span>
+                <span class="nav-tooltip">Chats</span>
+            </button>
+
+            <button class="nav-item" id="nav-btn-contacts" onclick="switchNavSection('contacts')" title="Contacts" aria-label="Contacts">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <span class="nav-tooltip">Contacts</span>
+            </button>
+
+            <button class="nav-item" id="nav-btn-profile" onclick="openProfileModal()" title="My Profile" aria-label="Profile">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span class="nav-tooltip">Profile</span>
+            </button>
+
+            <button class="nav-item" id="nav-btn-settings" onclick="openSettingsModal()" title="Settings" aria-label="Settings">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                <span class="nav-tooltip">Settings</span>
+            </button>
+        </div>
+
+        <!-- Secondary Bottom Controls -->
+        <div class="nav-menu-bottom">
+            <!-- Theme Toggle -->
+            <button class="nav-item" id="sidebar-theme-toggle" onclick="toggleTheme()" title="Toggle Theme" aria-label="Toggle Light/Dark Theme">
+                <svg class="theme-icon-light" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <span class="nav-tooltip">Theme</span>
+            </button>
+
+            <!-- Current Logged-in User Avatar -->
+            <div class="nav-user-item" onclick="openProfileModal()" title="{{ profile.effective_name }} (@{{ request.user.username }}) — Click to view profile">
+                <div class="avatar-wrap mini">
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" alt="{{ profile.effective_name }}" class="avatar-img" id="nav-current-user-avatar">
+                    {% else %}
+                        <div class="avatar-initial" id="nav-current-user-initial">{{ profile.initial }}</div>
+                    {% endif %}
+                    <span class="presence-badge online" title="Online"></span>
+                </div>
+            </div>
+
+            <!-- Sign Out -->
+            <form action="{% url 'logout' %}" method="post" class="nav-logout-form">
+                {% csrf_token %}
+                <button type="submit" class="nav-item danger" title="Sign Out of VCHAT" aria-label="Sign Out">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span class="nav-tooltip">Sign Out</span>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- ========================================================
+         2. MIDDLE: CONVERSATION & USER LIST
+         ======================================================== -->
+    <aside class="vchat-middle-panel" id="vchat-middle-panel">
+        <!-- Top App Bar / Header -->
+        <div class="panel-header">
+            <div class="panel-header-title-row">
+                <div class="brand-title-group">
+                    <h2 class="panel-heading" id="panel-heading-text">Messages</h2>
+                    <span class="brand-badge-pill">VCHAT</span>
+                </div>
+                <div class="panel-header-actions">
+                    <button class="icon-btn-ghost" onclick="switchNavSection('contacts')" title="New Conversation" aria-label="New Conversation">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Box: "Search users or messages..." -->
+            <div class="search-box-wrap">
+                <svg class="search-input-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="contact-search-input" class="search-input" placeholder="Search users or messages..." autocomplete="off">
+                <button id="clear-search-btn" class="clear-search-btn hidden" onclick="clearSearch()" aria-label="Clear Search">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Segmented Filter Tabs -->
+            <div class="panel-filter-bar">
+                <button class="filter-tab active" id="tab-chats" onclick="switchSidebarTab('chats')">
+                    <span>All Chats</span>
+                </button>
+                <button class="filter-tab" id="tab-contacts" onclick="switchSidebarTab('contacts')">
+                    <span>Contacts</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Conversations Stream Pane -->
+        <div class="conversations-pane active" id="conversations-pane">
+            <div id="conversations-list" class="conversations-list">
+                <div class="list-placeholder">
+                    <div class="spinner-dot"></div>
+                    <span>Loading conversations...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contacts & People Search Pane -->
+        <div class="contacts-pane hidden" id="contacts-pane">
+            <div class="contacts-header-hint">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Select a teammate to start a chat:</span>
+            </div>
+            <div id="contacts-list" class="contacts-list">
+                <div class="list-placeholder">Searching contacts...</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ========================================================
+         3. RIGHT: ACTIVE CONVERSATION & MESSAGE AREA
+         ======================================================== -->
+    <main class="vchat-chat-main" id="chat-main">
+        <!-- Empty State (No Chat Selected) -->
+        <div class="chat-empty-state" id="chat-empty-state">
+            <div class="empty-state-card">
+                <div class="empty-brand-emblem">
+                    <img src="{% static 'img/vchat-icon.svg' %}" alt="VCHAT Emblem" class="empty-logo-img" width="68" height="68" style="width:68px; height:68px; max-width:68px; max-height:68px;">
+                </div>
+                <h2 class="empty-title">Welcome to <span class="brand-gradient">VCHAT</span></h2>
+                <p class="empty-desc">Select an ongoing conversation from the left or discover teammates to start real-time messaging with WebSockets, instant delivery, and file sharing.</p>
+                <div class="empty-actions">
+                    <button class="btn btn-primary" onclick="switchSidebarTab('contacts')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>Start New Conversation</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Chat Shell -->
+        <div class="chat-active-shell hidden" id="chat-active-shell">
+            <!-- Active Chat Header -->
+            <header class="active-chat-header">
+                <!-- Mobile Back Button -->
+                <button class="icon-btn-ghost mobile-back-btn" onclick="closeActiveChatMobile()" title="Back to conversations" aria-label="Back">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </button>
+
+                <!-- User Info In Header -->
+                <div class="header-user-info" id="header-user-info" onclick="openRecipientProfile()">
+                    <div class="avatar-wrap">
+                        <div id="chat-header-avatar" class="avatar-initial">U</div>
+                        <span id="chat-header-presence-dot" class="presence-badge"></span>
+                    </div>
+                    <div class="header-text-block">
+                        <div class="header-name-row">
+                            <h3 id="chat-header-name">Loading...</h3>
+                            <span id="chat-header-username" class="header-username-badge">@user</span>
+                        </div>
+                        <div id="chat-header-status" class="header-status-text">
+                            <span class="status-indicator-dot"></span>
+                            <span class="status-label">Connecting...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Header Action Buttons (Call, Video, Search, More) -->
+                <div class="header-action-group">
+                    <!-- Voice Call -->
+                    <button class="icon-btn-action" id="btn-voice-call" onclick="startCall('voice')" title="Start Voice Call" aria-label="Voice Call">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Video Call -->
+                    <button class="icon-btn-action" id="btn-video-call" onclick="startCall('video')" title="Start Video Call" aria-label="Video Call">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </button>
+
+                    <!-- Search In Conversation -->
+                    <button class="icon-btn-action" id="btn-toggle-search" onclick="toggleInChatSearch()" title="Search in conversation" aria-label="Search Messages">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+
+                    <!-- More Options Menu -->
+                    <div class="dropdown-wrapper">
+                        <button class="icon-btn-action" id="btn-chat-more" onclick="toggleChatHeaderMenu(event)" title="More options" aria-label="More Options">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="1.5"></circle>
+                                <circle cx="12" cy="5" r="1.5"></circle>
+                                <circle cx="12" cy="19" r="1.5"></circle>
+                            </svg>
+                        </button>
+                        <div class="menu-dropdown hidden" id="chat-header-menu">
+                            <button class="menu-dropdown-item" onclick="openRecipientProfile()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <span>View Profile</span>
+                            </button>
+                            <button class="menu-dropdown-item" onclick="toggleSoundNotification()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                                <span id="menu-sound-text">Mute Notifications</span>
+                            </button>
+                            <button class="menu-dropdown-item danger" onclick="clearLocalChatView()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                <span>Clear Screen</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- In-Chat Search Bar (Collapsible) -->
+            <div class="in-chat-search-bar hidden" id="in-chat-search-bar">
+                <div class="in-chat-search-wrap">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="chat-search-input" placeholder="Search in this conversation..." autocomplete="off">
+                    <span id="chat-search-count" class="search-match-count">0 matches</span>
+                    <button class="icon-btn-sm" onclick="toggleInChatSearch()" title="Close Search">✕</button>
+                </div>
+            </div>
+
+            <!-- Connection Status Banner -->
+            <div id="connection-banner" class="connection-banner hidden">
+                <span class="pulse-dot"></span>
+                <span>Connecting to VCHAT secure channel...</span>
+            </div>
+
+            <!-- Message Area with Subtle Pattern Background -->
+            <div class="messages-container" id="messages-container">
+                <!-- Subtle pattern texture layer -->
+                <div class="chat-bg-pattern" aria-hidden="true"></div>
+
+                <div id="load-earlier-wrap" class="load-earlier-wrap hidden">
+                    <button class="load-earlier-btn" id="load-earlier-btn" onclick="loadEarlierMessages()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                        <span>Load earlier messages</span>
+                    </button>
+                </div>
+
+                <div id="messages-feed" class="messages-feed"></div>
+
+                <!-- Typing Indicator ("Rahul Sharma is typing...") -->
+                <div id="chat-typing-indicator" class="typing-indicator-row hidden">
+                    <div class="typing-bubble">
+                        <div class="typing-dots">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <span id="typing-text" class="typing-text">typing...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Mode Bar -->
+            <div id="edit-mode-bar" class="edit-mode-bar hidden">
+                <div class="edit-mode-info">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    <span class="edit-mode-title">Editing message:</span>
+                    <span id="edit-original-text" class="edit-original-text"></span>
+                </div>
+                <button class="edit-cancel-btn" onclick="cancelEditMessage()" title="Cancel edit">✕</button>
+            </div>
+
+            <!-- Attachment Preview Strip -->
+            <div id="attachment-preview-strip" class="attachment-preview-strip hidden">
+                <div class="attachment-chip">
+                    <span id="attachment-chip-icon" class="attachment-chip-icon">📎</span>
+                    <span id="attachment-chip-name" class="attachment-chip-name">filename.pdf</span>
+                    <span id="attachment-chip-size" class="attachment-chip-size">1.2 MB</span>
+                    <button type="button" class="attachment-chip-remove" onclick="removePendingAttachment()">×</button>
+                </div>
+            </div>
+
+            <!-- Emoji Picker Popup -->
+            <div id="emoji-picker" class="emoji-picker hidden">
+                <div class="emoji-picker-header">
+                    <span class="picker-title">Select Emoji</span>
+                    <button type="button" class="emoji-picker-close" onclick="toggleEmojiPicker()">✕</button>
+                </div>
+                <div class="emoji-grid" id="emoji-grid"></div>
+            </div>
+
+            <!-- Message Composer -->
+            <div class="composer-container">
+                <form id="chat-composer-form" class="composer-form" onsubmit="handleSendMessage(event)">
+                    <!-- Hidden File Input -->
+                    <input type="file" id="composer-file-input" class="hidden" onchange="handleFileSelected(event)">
+                    <input type="file" id="composer-image-input" accept="image/*" class="hidden" onchange="handleFileSelected(event)">
+
+                    <!-- Emoji Button -->
+                    <button type="button" class="composer-btn emoji-toggle-btn" id="emoji-toggle-btn" onclick="toggleEmojiPicker()" title="Add emoji" aria-label="Emoji Picker">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                    </button>
+
+                    <!-- Attachment Button (Any File) -->
+                    <button type="button" class="composer-btn attachment-btn" onclick="document.getElementById('composer-file-input').click()" title="Attach file" aria-label="Attach File">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Image Direct Button -->
+                    <button type="button" class="composer-btn image-btn" onclick="document.getElementById('composer-image-input').click()" title="Send image" aria-label="Attach Image">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                    </button>
+
+                    <!-- Text Input -->
+                    <div class="composer-input-wrap">
+                        <textarea id="composer-textarea" class="composer-textarea" placeholder="Type a message..." rows="1" maxlength="3000"></textarea>
+                    </div>
+
+                    <!-- Circular Blue Send Button -->
+                    <button type="submit" id="composer-send-btn" class="composer-send-btn" title="Send message (Enter)" aria-label="Send Message" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- ========================================================
+     MODALS & DIALOGS
+     ======================================================== -->
+
+<!-- 1. SETTINGS MODAL -->
+<div id="settings-modal" class="modal-overlay hidden" onclick="closeSettingsModal(event)">
+    <div class="modal-card settings-card" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <div class="modal-title-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                <h3>VCHAT Settings</h3>
+            </div>
+            <button class="modal-close-btn" onclick="closeSettingsModal()">✕</button>
+        </div>
+
+        <div class="settings-body">
+            <!-- Theme Settings Section -->
+            <div class="settings-group">
+                <h4 class="settings-group-title">Appearance & Theme</h4>
+                <div class="theme-choice-grid">
+                    <button class="theme-choice-btn" id="theme-btn-light" onclick="setAppTheme('light')">
+                        <div class="theme-preview-box light"></div>
+                        <span>Light Mode</span>
+                    </button>
+                    <button class="theme-choice-btn" id="theme-btn-dark" onclick="setAppTheme('dark')">
+                        <div class="theme-preview-box dark"></div>
+                        <span>Dark Navy</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notifications Section -->
+            <div class="settings-group">
+                <h4 class="settings-group-title">Notifications</h4>
+                <div class="setting-toggle-row">
+                    <div>
+                        <div class="setting-label">Sound Chime</div>
+                        <div class="setting-hint">Play subtle chime when receiving new messages</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="setting-sound-toggle" onchange="handleSoundSettingChange(this)">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Privacy & Presence -->
+            <div class="settings-group">
+                <h4 class="settings-group-title">Privacy & Presence</h4>
+                <div class="setting-toggle-row">
+                    <div>
+                        <div class="setting-label">Real-time Presence</div>
+                        <div class="setting-hint">Show 🟢 Online status to other teammates</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="setting-presence-toggle" checked disabled>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-toggle-row">
+                    <div>
+                        <div class="setting-label">Read Receipts</div>
+                        <div class="setting-hint">Send blue checkmarks (✓✓) when messages are read</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="setting-read-receipts-toggle" checked disabled>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Chat Wallpaper / Pattern -->
+            <div class="settings-group">
+                <h4 class="settings-group-title">Chat Experience</h4>
+                <div class="setting-toggle-row">
+                    <div>
+                        <div class="setting-label">Subtle Background Pattern</div>
+                        <div class="setting-hint">Display textured ambient geometric pattern in chat area</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="setting-pattern-toggle" checked onchange="toggleWallpaperPattern(this)">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- About VCHAT -->
+            <div class="settings-app-info">
+                <div class="app-info-left">
+                    <img src="{% static 'img/vchat-icon.svg' %}" alt="VCHAT" class="app-info-icon">
+                    <div>
+                        <div class="app-info-title">VCHAT Platform</div>
+                        <div class="app-info-version">Version 2.4.0 — Professional Edition</div>
+                    </div>
+                </div>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary btn-sm danger">Sign Out</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 2. USER PROFILE MODAL -->
+<div id="profile-modal" class="modal-overlay hidden" onclick="closeProfileModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <div class="modal-title-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <h3>Your VCHAT Profile</h3>
+            </div>
+            <button class="modal-close-btn" onclick="closeProfileModal()">✕</button>
+        </div>
+
+        <form id="profile-form" class="modal-form" onsubmit="handleSaveProfile(event)">
+            <div class="profile-avatar-upload-row">
+                <div class="avatar-preview-wrap">
+                    {% if profile.avatar %}
+                        <img id="profile-avatar-preview" src="{{ profile.avatar.url }}" alt="Preview" class="avatar-img large">
+                    {% else %}
+                        <div id="profile-avatar-initial" class="avatar-initial large">{{ profile.initial }}</div>
+                    {% endif %}
+                </div>
+                <div class="avatar-upload-ctrl">
+                    <label for="profile-avatar-input" class="btn btn-secondary btn-sm">Change Avatar Photo</label>
+                    <input type="file" id="profile-avatar-input" name="avatar" accept="image/*" class="hidden" onchange="handleAvatarPreview(event)">
+                    <small class="help-text">JPG, PNG or WEBP (Max 5MB)</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="profile-display-name">Display Name</label>
+                <div class="input-wrap">
+                    <input type="text" id="profile-display-name" name="display_name" class="form-input" value="{{ profile.display_name }}" placeholder="e.g. Rahul Sharma">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="profile-bio">About / Status</label>
+                <div class="input-wrap">
+                    <textarea id="profile-bio" name="bio" class="form-input" rows="2" placeholder="What are you currently working on?">{{ profile.bio }}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="profile-email">Email Address</label>
+                <div class="input-wrap">
+                    <input type="email" id="profile-email" name="email" class="form-input" value="{{ request.user.email }}" placeholder="yourname@domain.com">
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeProfileModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="save-profile-btn">
+                    <span>Save Changes</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 3. RECIPIENT PROFILE MODAL (View Other User) -->
+<div id="recipient-profile-modal" class="modal-overlay hidden" onclick="closeRecipientProfile(event)">
+    <div class="modal-card small" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Contact Details</h3>
+            <button class="modal-close-btn" onclick="closeRecipientProfile()">✕</button>
+        </div>
+        <div class="recipient-card-body">
+            <div class="recipient-avatar-block">
+                <div id="recip-avatar-wrap" class="avatar-wrap large">
+                    <div id="recip-avatar-initial" class="avatar-initial large">U</div>
+                </div>
+                <h3 id="recip-display-name" class="recip-name">User Name</h3>
+                <span id="recip-username" class="recip-handle">@username</span>
+                <div id="recip-status-badge" class="recip-badge">🟢 Online</div>
+            </div>
+            <div class="recip-bio-box">
+                <div class="recip-label">About</div>
+                <p id="recip-bio-text" class="recip-bio">Available on VCHAT</p>
+            </div>
+            <div class="recip-actions-row">
+                <button class="btn btn-primary btn-sm" onclick="closeRecipientProfile()">Message</button>
+                <button class="btn btn-secondary btn-sm" onclick="startCall('voice')">Call</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 4. VOICE / VIDEO CALL MODAL (Interactive Calling Experience) -->
+<div id="call-modal" class="modal-overlay hidden" onclick="closeCallModal(event)">
+    <div class="modal-card call-card" onclick="event.stopPropagation()">
+        <div class="call-interface">
+            <div class="call-top-bar">
+                <span class="call-type-badge" id="call-type-label">VCHAT Voice Call</span>
+                <span class="call-timer" id="call-timer">00:00</span>
+            </div>
+
+            <div class="call-avatar-stage">
+                <div class="call-pulse-ring ring-1"></div>
+                <div class="call-pulse-ring ring-2"></div>
+                <div class="avatar-wrap call-avatar" id="call-avatar-wrap">
+                    <div id="call-avatar-initial" class="avatar-initial large">U</div>
+                </div>
+                <h3 id="call-user-name" class="call-user-name">Rahul Sharma</h3>
+                <p id="call-status-label" class="call-status-label">Calling...</p>
+            </div>
+
+            <!-- Simulated audio visualizer wave -->
+            <div class="call-audio-waves" id="call-audio-waves">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+
+            <div class="call-controls">
+                <button class="call-ctrl-btn" id="call-mute-btn" onclick="toggleCallMute()" title="Mute Microphone">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                </button>
+
+                <button class="call-ctrl-btn" id="call-video-toggle-btn" onclick="toggleCallVideo()" title="Toggle Camera">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                </button>
+
+                <button class="call-ctrl-btn end-call" onclick="endCall()" title="End Call">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 5. DELETE CONFIRMATION MODAL -->
+<div id="delete-modal" class="modal-overlay hidden" onclick="closeDeleteModal(event)">
+    <div class="modal-card small" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Delete Message?</h3>
+            <button class="modal-close-btn" onclick="closeDeleteModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete this message? It will be permanently removed for all members in this conversation.</p>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+            <button type="button" class="btn btn-danger" id="confirm-delete-btn" onclick="executeDeleteMessage()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================
+     INITIAL APPLICATION STATE CONFIG
+     ======================================================== -->
+{{ profile.user.id|json_script:"current-user-id" }}
+{{ profile.user.username|json_script:"current-username" }}
+{{ profile.effective_name|json_script:"current-display-name" }}
+{% if initial_room %}
+    {{ initial_room.id|json_script:"initial-room-id" }}
+{% else %}
+    null|json_script:"initial-room-id"
+{% endif %}
+{% if target_user %}
+    {{ target_user.username|json_script:"initial-target-username" }}
+{% else %}
+    null|json_script:"initial-target-username"
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/app.js' %}?v=2.5.0"></script>
+{% endblock %}

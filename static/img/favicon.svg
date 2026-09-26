@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="fav-l" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="fav-r" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE"/>
+      <stop offset="60%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#0A1128"/>
+  <rect width="62" height="62" x="1" y="1" rx="15" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1.5"/>
+  <path d="M16 18 C16 16.5 17.5 15.5 19 15.5 L25 15.5 C26.5 15.5 27.8 16.5 28.5 17.8 L33 30 L27.5 48 C27 49 25.5 49.5 24.5 48.8 L17 44 C16.4 43.6 16 42.9 16 42.2 Z" fill="url(#fav-l)"/>
+  <path d="M48 18 C48 16.5 46.5 15.5 45 15.5 L39 15.5 C37.5 15.5 36.2 16.5 35.5 17.8 L31 30 L32.5 50 C32.5 51 33.5 51.7 34.5 51.3 L39 49 C40 48.5 40.5 47.5 41 46.5 L47.8 19.5 C47.9 19 48 18.5 48 18 Z" fill="url(#fav-r)"/>
+  <circle cx="45.5" cy="15.5" r="3.5" fill="#38BDF8" stroke="#0A1128" stroke-width="1.5"/>
+</svg>
